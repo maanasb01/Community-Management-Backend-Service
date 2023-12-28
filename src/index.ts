@@ -1,9 +1,19 @@
-import express from 'express';
+import express from "express";
+import "dotenv/config";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { connectToDB } from "./db";
 
+connectToDB();
 const app = express();
+const port = process.env.PORT || 3000;
 
-app.get('/', (req, res)=>{
-    res.send("HEY!");
+app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
+
+app.get("/", (req, res) => {
+  res.send("yo");
 });
 
-app.listen(3000, () => console.log("Server is Running..."))
+app.listen(port, () => console.log("Server is Running..."));
