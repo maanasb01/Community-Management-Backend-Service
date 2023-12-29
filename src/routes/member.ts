@@ -1,11 +1,11 @@
-import { Router, Response} from "express";
+import { Router, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { Snowflake } from "@theinternetfolks/snowflake";
 import { tokenAuth } from "../middlewares/tokenAuth";
 import { IRequest } from "../types";
 import { Role } from "../models/Role";
-import { Community} from "../models/Community";
-import { Member} from "../models/Member";
+import { Community } from "../models/Community";
+import { Member } from "../models/Member";
 import { User } from "../models/User";
 
 const router = Router();
@@ -58,6 +58,16 @@ router.post(
           .json({ status: false, message: "Invalid User Id" });
       }
 
+      const existingMember = await Member.findOne({
+        user: userId,
+        community: communityId,
+      });
+      if (existingMember) {
+        return res
+          .status(400)
+          .json({ status: false, message: "Member already exists" });
+      }
+
       const newMember = await Member.create({
         id: Snowflake.generate(),
         community: community.id,
@@ -87,9 +97,8 @@ router.post(
 );
 
 //Delete Member. DELETE:/v1/member
-router.delete("/:id", async (req: IRequest, res: Response) => {
+router.delete("/:id", tokenAuth, async (req: IRequest, res: Response) => {
   try {
-
     if (!req.user) {
       return res.status(400);
     }
@@ -132,13 +141,11 @@ router.delete("/:id", async (req: IRequest, res: Response) => {
       currentUserMember.role !== communityAdminRole.id &&
       currentUserMember.role !== communityModeratorRole?.id
     ) {
-      return res
-        .status(403)
-        .json({
-          status: false,
-          message: "Forbidden",
-          error: "NOT_ALLOWED_ACCESS",
-        });
+      return res.status(403).json({
+        status: false,
+        message: "Forbidden",
+        error: "NOT_ALLOWED_ACCESS",
+      });
     }
 
     await removeMember.deleteOne();
