@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, {InferSchemaType, Schema} from "mongoose";
 
 
     const roleSchema = new Schema({
@@ -15,5 +15,6 @@ import mongoose, {Schema} from "mongoose";
         }
     },
     {timestamps:true});
-    
-    export const Role = mongoose.model('role',roleSchema)
+
+export type RoleType = InferSchemaType<typeof roleSchema>    
+export const Role = mongoose.model<RoleType>('role',roleSchema)

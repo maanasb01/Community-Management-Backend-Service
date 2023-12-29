@@ -1,5 +1,4 @@
-import mongoose, {Schema} from "mongoose";
-import { User } from "./User";
+import mongoose, {InferSchemaType, Schema} from "mongoose";
 
 const communitySchema = new Schema({
     id:{
@@ -26,4 +25,6 @@ const communitySchema = new Schema({
     }
 },{timestamps:true})
 
-export const Community = mongoose.model("community",communitySchema);
+export type CommunityType = InferSchemaType<typeof communitySchema>    
+
+export const Community = mongoose.model<CommunityType>("community",communitySchema);

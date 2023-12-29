@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, {InferSchemaType, Schema} from "mongoose";
 
 
     const memberSchema = new Schema({
@@ -23,4 +23,5 @@ import mongoose, {Schema} from "mongoose";
     },
     {timestamps:true});
     
-    export const Member = mongoose.model('member',memberSchema)
+    export type MemberType = InferSchemaType<typeof memberSchema>  
+    export const Member = mongoose.model<MemberType>('member',memberSchema)
