@@ -25,7 +25,6 @@ router.post(
     try {
         const role = await Role.findOne({name:req.body.name});
         if(role){
-            console.log(role)
             return res.status(409).json({status:false,message:"Role Already Exists"})
         }
         const newRole = await Role.create({

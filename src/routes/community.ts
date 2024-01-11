@@ -36,7 +36,7 @@ router.post(
       if (!adminRole) {
         const newRole = await Role.create({
           id: Snowflake.generate(),
-          name: req.body.name,
+          name: "Community Admin",
         });
         role = newRole;
       } else {
