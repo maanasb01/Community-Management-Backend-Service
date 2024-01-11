@@ -1,7 +1,7 @@
 
 # TIF-Assignment
 
-A backend service that enables users to make their communities and add members to it.
+A backend service that enables users to make their communities and add members to them.
 ## Table of Contents
 
 - [Tech Stack](#tech-stack)
